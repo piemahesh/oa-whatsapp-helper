@@ -12,8 +12,8 @@ const greetingToUser = async (req, res) => {
       });
     }
 
-    const { phoneNumber, studentName, message } = req.body;
-    const cleanPhone = phoneNumber.replace(/\s+/g, "");
+    const { phoneNumber, countryCode, studentName, message } = req.body;
+    const cleanPhone = countryCode + phoneNumber.replace(/\s+/g, "");
 
     // Default greeting if no custom message provided
     const greetingMessage =
@@ -54,9 +54,10 @@ const sendSyllabusToUser = async (req, res) => {
       });
     }
 
-    const { phoneNumber, studentName, courseName, syllabusLink } = req.body;
+    const { phoneNumber, countryCode, studentName, courseName, syllabusLink } =
+      req.body;
 
-    const cleanPhone = phoneNumber.replace(/\s+/g, "");
+    const cleanPhone = countryCode + phoneNumber.replace(/\s+/g, "");
 
     // Create syllabus message
     const syllabusMessage = `📚 *${courseName} Syllabus*

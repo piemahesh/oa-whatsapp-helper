@@ -1,10 +1,12 @@
 const express = require("express");
 const rateLimit = require("express-rate-limit");
 require("dotenv").config();
+const cors = require("cors");
 const whatsApproute = require("./src/router/routes");
 const app = express();
 
 // Middleware
+app.use(cors());
 app.use(express.json());
 app.use(
   rateLimit({

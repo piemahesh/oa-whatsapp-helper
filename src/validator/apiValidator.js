@@ -1,11 +1,16 @@
 const { body } = require("express-validator");
 // Phone number validation
+// const validatePhoneNumber = (phone) => {
+//   const phoneRegex = /^[\+]?[1-9][\d]{10,14}$/;
+//   return phoneRegex.test(phone.replace(/\s+/g, ""));
+// };
 const validatePhoneNumber = (phone) => {
-  const phoneRegex = /^[\+]?[1-9][\d]{10,14}$/;
+  const phoneRegex = /^[6-9]\d{9}$/;
   return phoneRegex.test(phone.replace(/\s+/g, ""));
 };
 
 const greetingValidator = [
+  body("countryCode").notEmpty().withMessage("Country code is required"),
   body("phoneNumber")
     .notEmpty()
     .withMessage("Phone number is required")
@@ -23,6 +28,7 @@ const greetingValidator = [
 ];
 
 const sendSyllabusValidator = [
+  body("countryCode").notEmpty().withMessage("Country code is required"),
   body("phoneNumber")
     .notEmpty()
     .withMessage("Phone number is required")

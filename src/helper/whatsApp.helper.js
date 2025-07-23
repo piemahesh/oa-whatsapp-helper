@@ -1,5 +1,6 @@
 const axios = require("axios");
 const { WHATSAPP_CONFIG } = require("../utils");
+const toCamelCase = require("./formatCourseName");
 // WhatsApp API helper
 const sendWhatsAppMessage = async (phoneNumber, message) => {
   try {
@@ -43,7 +44,7 @@ const sendSyllabus = async (phoneNumber, message, courseName, syllabusLink) => {
         document: {
           link: syllabusLink,
           caption: message,
-          filename: `${courseName}.pdf`,
+          filename: `${toCamelCase(courseName)}Syllabus.pdf`,
         },
       },
       {
