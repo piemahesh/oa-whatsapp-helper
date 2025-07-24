@@ -14,14 +14,8 @@ const greetingToUser = async (req, res) => {
 
     const { phoneNumber, countryCode, studentName, message } = req.body;
     const cleanPhone = countryCode + phoneNumber.replace(/\s+/g, "");
-
-    // Default greeting if no custom message provided
-    const greetingMessage =
-      message ||
-      `Hello ${studentName}! 👋\n\nHope you're doing well! How can I help you today? 😊`;
-
     // Send greeting via WhatsApp
-    const response = await sendWhatsAppMessage(cleanPhone, greetingMessage);
+    const response = await sendWhatsAppMessage(cleanPhone, studentName);
 
     res.status(200).json({
       success: true,
@@ -59,21 +53,10 @@ const sendSyllabusToUser = async (req, res) => {
 
     const cleanPhone = countryCode + phoneNumber.replace(/\s+/g, "");
 
-    // Create syllabus message
-    const syllabusMessage = `📚 *${courseName} Syllabus*
-
-Hello ${studentName}! 👋
-
-Here's your syllabus for *${courseName}*.
-
-📄 Please download your syllabus. If you have any questions about the course content, feel free to ask!
-
-Good luck with your studies! 🎓`;
-
     // Send syllabus via WhatsApp
     const response = await sendSyllabus(
       cleanPhone,
-      syllabusMessage,
+      studentName,
       courseName,
       syllabusLink
     );

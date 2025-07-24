@@ -1,4 +1,5 @@
 const express = require("express");
+const functions = require("firebase-functions");
 const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 const cors = require("cors");
@@ -15,6 +16,9 @@ app.use(
   })
 );
 
+app.get("/", (req, res) =>
+  res.json({ message: "whatsapp helper working good" })
+);
 app.use("/api/v1/", whatsApproute);
 // Error handling
 app.use((error, req, res, next) => {
@@ -25,10 +29,26 @@ app.use((error, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 3000;
-app.listen(PORT, () => {
-  console.log(`🚀 WhatsApp API running on port ${PORT}`);
-  console.log(`📱 Health: http://localhost:${PORT}/api/v1/health`);
-});
+// const PORT = process.env.PORT || 3000;
+// app.listen(PORT, () => {
+//   console.log(`🚀 WhatsApp API running on port ${PORT}`);
+//   console.log(`📱 Health: http://localhost:${PORT}/api/v1/health`);
+// });
 
-module.exports = app;
+let cachedServer = null;
+
+module.exports["oa_whatsapp_helper"] = functions.https.onRequest(
+  {
+    region: "asia-south1",
+    // cpu: 1,
+    // concurrency: 50,
+    // timeoutSeconds: 540,
+  },
+  (req, res) => {
+    if (!cachedServer) {
+      console.log("Initializing Express server...");
+      cachedServer = app;
+    }
+    return cachedServer(req, res);
+  }
+);
