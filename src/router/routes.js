@@ -27,7 +27,10 @@ router.get("/webhook", (req, res) => {
   const token = req.query["hub.verify_token"];
   const challenge = req.query["hub.challenge"];
 
-  if (mode === "subscribe" && token === VERIFY_TOKEN) {
+  console.log(mode, token, challenge);
+  console.log("-------------------");
+
+  if (mode === "subscribe" && token === process.env.VERIFY_TOKEN) {
     console.log("✅ Webhook verified successfully!");
     res.status(200).send(challenge);
   } else {
@@ -42,7 +45,7 @@ router.post("/webhook", (req, res) => {
 
   if (body.object === "whatsapp_business_account") {
     const messages = body.entry?.[0]?.changes?.[0]?.value?.messages;
-
+    console.log(JSON.stringify(body));
     if (messages && messages.length > 0) {
       const message = messages[0];
       const phoneNumber = message.from;
