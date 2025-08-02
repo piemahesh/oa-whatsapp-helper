@@ -1,14 +1,18 @@
 const express = require("express");
 const { greetingValidator, sendSyllabusValidator } = require("../validator");
-const { greetingToUser, sendSyllabusToUser } = require("../controller");
+const {
+  handleSyllabusAndGreeting,
+  // sendSyllabusToUser,
+} = require("../controller");
+const { handleIncomingMessageWebhook } = require("../helper");
 
 const router = express();
 
 // 1. Send Greeting Function
-router.post("/send-greeting", greetingValidator, greetingToUser);
+// router.post("/send-greeting", greetingValidator, greetingToUser);
 
 // 2. Send Syllabus Link Function
-router.post("/send-syllabus", sendSyllabusValidator, sendSyllabusToUser);
+router.post("/send-syllabus", sendSyllabusValidator, handleSyllabusAndGreeting);
 
 // Health check
 router.get("/health", (req, res) => {
@@ -40,7 +44,7 @@ router.get("/webhook", (req, res) => {
 });
 
 // ✅ Message Handler (POST)
-router.post("/webhook", (req, res) => {
+router.post("/webhook", async (req, res) => {
   const body = req.body;
 
   if (body.object === "whatsapp_business_account") {
@@ -55,6 +59,8 @@ router.post("/webhook", (req, res) => {
       console.log(`📩 Message received from ${phoneNumber}`);
       console.log(`💬 Message: ${text}`);
       console.log(`⏱️ Time: ${new Date(timestamp * 1000).toLocaleString()}`);
+
+      await handleIncomingMessageWebhook({ phoneNumber, timestamp });
 
       // TODO: Save to DB or respond using WhatsApp API
     }
