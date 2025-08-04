@@ -133,11 +133,11 @@ const handleSyllabusAndGreeting = async (req, res) => {
 
     // If not within 24hr, return early
     if (!is24hrConversation) {
-      return res.status(200).json({
-        success: true,
+      return res.status(404).json({
+        success: false,
         isNewEnquiry,
         is24hrConversation: false,
-        message: "User must first initiate WhatsApp conversation.",
+        message: ` Hi ${studentName} 🖐🏻, please first initiate WhatsApp conversation.`,
       });
     }
 
