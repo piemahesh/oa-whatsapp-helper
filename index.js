@@ -38,7 +38,7 @@ const connectToMongoDB = async () => {
   if (!mongoConnection) {
     console.log("Connecting to MongoDB...");
     try {
-      console.log(MONGO_OPTIONS, MONGO_URI);
+      // console.log(MONGO_OPTIONS, MONGO_URI);
       mongoConnection = await mongoose.connect(MONGO_URI, MONGO_OPTIONS);
       console.log("Connected to MongoDB!");
     } catch (error) {

@@ -3,7 +3,7 @@ const { getDatabaseName } = require("../utils");
 
 const conversationSchema = new mongoose.Schema(
   {
-    month: { type: String, required: true, unique: true }, // e.g., "2025-08"
+    month: { type: String, required: true }, // e.g., "2025-08"
     used: { type: Number, default: 0 },
     limit: { type: Number, default: 1000 },
   },
